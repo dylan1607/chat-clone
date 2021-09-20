@@ -3,6 +3,7 @@ import moment from "moment";
 import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import tailwind from "tailwind-rn";
+import useColorScheme from "../hooks/useColorScheme";
 import { ChatRoom } from "../types";
 
 export type ChatListItemProps = {
@@ -10,6 +11,7 @@ export type ChatListItemProps = {
 };
 
 const ChatListItem = (props: ChatListItemProps) => {
+  const colorScheme = useColorScheme();
   const navigation = useNavigation();
   const { chatRoom } = props;
   const user = chatRoom.users[1];

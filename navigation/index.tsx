@@ -9,7 +9,6 @@ import {
   Fontisto,
   MaterialIcons,
   FontAwesome5,
-  MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import {
@@ -19,22 +18,19 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
-import { ColorSchemeName, Pressable, View } from "react-native";
+import { ColorSchemeName, View } from "react-native";
 import tw from "tailwind-rn";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import ModalScreen from "../screens/ModalScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
-import {
-  RootStackParamList,
-  RootTabParamList,
-  RootTabScreenProps,
-} from "../types";
+import { RootStackParamList, RootTabParamList } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import ChatScreen from "../screens/ChatScreen";
 import RoomScreen from "../screens/RoomScreen";
 import tailwind from "tailwind-rn";
+import { useTheme } from "@react-navigation/native";
 
 export default function Navigation({
   colorScheme,
@@ -58,14 +54,17 @@ export default function Navigation({
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
+  const { colors } = useTheme();
+  const colorScheme = useColorScheme();
+
   return (
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: Colors.light.tint,
+          backgroundColor: Colors[colorScheme].tint,
         },
         headerShadowVisible: false,
-        headerTintColor: Colors.light.background,
+        headerTintColor: Colors[colorScheme].text,
         headerTitleAlign: "left",
         headerTitleStyle: {
           fontWeight: "bold",
@@ -82,10 +81,14 @@ function RootNavigator() {
               <Octicons
                 name="search"
                 size={22}
-                color="white"
+                color={Colors[colorScheme].text}
                 style={tw(`mr-6`)}
               />
-              <Octicons name="kebab-vertical" size={22} color="white" />
+              <Octicons
+                name="kebab-vertical"
+                size={22}
+                color={Colors[colorScheme].text}
+              />
             </View>
           ),
         }}
@@ -97,18 +100,18 @@ function RootNavigator() {
           title: route.params.name,
           headerRight: () => (
             <View style={tailwind(`flex-row justify-between`)}>
-              <MaterialIcons name="call" size={22} color={"white"} />
+              <MaterialIcons name="call" size={22} color={colors.text} />
               <FontAwesome5
                 style={tailwind(`ml-5`)}
                 name="video"
                 size={22}
-                color={"white"}
+                color={Colors[colorScheme].text}
               />
               <Octicons
                 style={tailwind(`ml-5`)}
                 name="kebab-vertical"
                 size={22}
-                color="white"
+                color={Colors[colorScheme].text}
               />
             </View>
           ),
@@ -134,17 +137,17 @@ const MainTab = createMaterialTopTabNavigator<RootTabParamList>();
 
 function MainTabNavigator() {
   const colorScheme = useColorScheme();
-
+  const { colors } = useTheme();
   return (
     <MainTab.Navigator
       initialRouteName="Chats"
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].background,
+        tabBarActiveTintColor: Colors[colorScheme].text,
         tabBarStyle: {
           backgroundColor: Colors[colorScheme].tint,
         },
         tabBarIndicatorStyle: {
-          backgroundColor: Colors[colorScheme].background,
+          backgroundColor: "white",
           height: 3,
         },
         tabBarLabelStyle: {
@@ -159,7 +162,7 @@ function MainTabNavigator() {
           tabBarIcon: ({ color: String }) => (
             <Fontisto
               name="camera"
-              color={Colors[colorScheme].background}
+              color={Colors[colorScheme].text}
               size={18}
             />
           ),
