@@ -3,7 +3,14 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome, Octicons, Fontisto } from "@expo/vector-icons";
+import {
+  FontAwesome,
+  Octicons,
+  Fontisto,
+  MaterialIcons,
+  FontAwesome5,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import {
   NavigationContainer,
@@ -26,6 +33,8 @@ import {
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import ChatScreen from "../screens/ChatScreen";
+import RoomScreen from "../screens/RoomScreen";
+import tailwind from "tailwind-rn";
 
 export default function Navigation({
   colorScheme,
@@ -82,9 +91,33 @@ function RootNavigator() {
         }}
       />
       <Stack.Screen
+        name="RoomScreen"
+        component={RoomScreen}
+        options={({ route }) => ({
+          title: route.params.name,
+          headerRight: () => (
+            <View style={tailwind(`flex-row justify-between`)}>
+              <MaterialIcons name="call" size={22} color={"white"} />
+              <FontAwesome5
+                style={tailwind(`ml-5`)}
+                name="video"
+                size={22}
+                color={"white"}
+              />
+              <Octicons
+                style={tailwind(`ml-5`)}
+                name="kebab-vertical"
+                size={22}
+                color="white"
+              />
+            </View>
+          ),
+        })}
+      />
+      <Stack.Screen
         name="NotFound"
         component={NotFoundScreen}
-        options={{ title: "Oops!" }}
+        options={{ title: "Nothing" }}
       />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
